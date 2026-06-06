@@ -1,0 +1,253 @@
+@import "tailwindcss";
+
+@theme {
+  --color-espresso: #1a1410;
+  --color-roast: #2c1810;
+  --color-cream: #faf6f0;
+  --color-latte: #c4a574;
+  --color-mocha: #6b4423;
+  --color-steam: #e8dfd3;
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream text-roast font-body antialiased;
+  }
+
+  ::selection {
+    @apply bg-latte/40 text-espresso;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  @keyframes pamphletOpen {
+    from {
+      opacity: 0;
+      transform: perspective(1200px) rotateY(-12deg) scale(0.92);
+    }
+    to {
+      opacity: 1;
+      transform: perspective(1200px) rotateY(0deg) scale(1);
+    }
+  }
+
+  .menu-pamphlet-open {
+    animation: pamphletOpen 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    transform-origin: center center;
+  }
+
+  .menu-book-spread {
+    transform-style: preserve-3d;
+    transform-origin: center center;
+  }
+
+  @keyframes menuFlipNext {
+    0% {
+      transform: perspective(1600px) rotateY(0deg);
+      opacity: 1;
+    }
+    45% {
+      transform: perspective(1600px) rotateY(-22deg) scale(0.97);
+      opacity: 0.35;
+    }
+    100% {
+      transform: perspective(1600px) rotateY(0deg);
+      opacity: 1;
+    }
+  }
+
+  @keyframes menuFlipPrev {
+    0% {
+      transform: perspective(1600px) rotateY(0deg);
+      opacity: 1;
+    }
+    45% {
+      transform: perspective(1600px) rotateY(22deg) scale(0.97);
+      opacity: 0.35;
+    }
+    100% {
+      transform: perspective(1600px) rotateY(0deg);
+      opacity: 1;
+    }
+  }
+
+  .menu-flip-next {
+    animation: menuFlipNext 0.48s cubic-bezier(0.45, 0, 0.25, 1) forwards;
+  }
+
+  .menu-flip-prev {
+    animation: menuFlipPrev 0.48s cubic-bezier(0.45, 0, 0.25, 1) forwards;
+  }
+
+  .smoke-text {
+    min-width: 140px;
+    min-height: 72px;
+  }
+
+  .smoke-backdrop {
+    position: absolute;
+    inset: -20px -28px;
+    border-radius: 50%;
+    filter: blur(14px);
+    animation: smokeFloat 4s ease-in-out infinite;
+    transition: background 0.45s ease;
+  }
+
+  .smoke-text--light .smoke-backdrop {
+    background: radial-gradient(
+      ellipse,
+      rgba(255, 252, 248, 0.95) 0%,
+      rgba(232, 223, 211, 0.75) 40%,
+      transparent 72%
+    );
+  }
+
+  .smoke-text--dark .smoke-backdrop {
+    background: radial-gradient(
+      ellipse,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(200, 190, 180, 0.22) 45%,
+      transparent 72%
+    );
+  }
+
+  @keyframes smokePop {
+    0% {
+      transform: scale(1);
+    }
+    40% {
+      transform: scale(1.12);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .smoke-pop {
+    animation: smokePop 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .smoke-label {
+    animation: smokeFloat 4s ease-in-out infinite;
+    letter-spacing: 0.05em;
+    transition: color 0.45s ease, text-shadow 0.45s ease;
+  }
+
+  .smoke-text:focus-visible {
+    border-radius: 9999px;
+  }
+
+  .smoke-text--light .smoke-label {
+    text-shadow:
+      0 0 12px rgba(255, 255, 255, 0.95),
+      0 2px 6px rgba(26, 20, 16, 0.12);
+  }
+
+  .smoke-text--dark .smoke-label {
+    text-shadow:
+      0 0 16px rgba(255, 255, 255, 0.55),
+      0 0 32px rgba(196, 165, 116, 0.35),
+      0 2px 10px rgba(0, 0, 0, 0.45);
+  }
+
+  .smoke-wisp {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(10px);
+    animation: smokeRise 4.5s ease-in-out infinite;
+  }
+
+  .smoke-text--light .smoke-wisp {
+    background: radial-gradient(
+      ellipse,
+      rgba(210, 200, 190, 0.65) 0%,
+      rgba(220, 215, 205, 0.3) 50%,
+      transparent 75%
+    );
+  }
+
+  .smoke-text--dark .smoke-wisp {
+    background: radial-gradient(
+      ellipse,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(230, 225, 220, 0.25) 50%,
+      transparent 75%
+    );
+  }
+
+  .smoke-wisp-1 {
+    width: 90px;
+    height: 55px;
+    left: 0;
+    bottom: 0;
+    animation-delay: 0s;
+  }
+
+  .smoke-wisp-2 {
+    width: 110px;
+    height: 65px;
+    left: 25%;
+    bottom: 15%;
+    animation-delay: 0.9s;
+  }
+
+  .smoke-wisp-3 {
+    width: 85px;
+    height: 50px;
+    right: 0;
+    bottom: 5%;
+    animation-delay: 1.8s;
+  }
+
+  .smoke-wisp-4 {
+    width: 70px;
+    height: 45px;
+    left: 40%;
+    bottom: 30%;
+    animation-delay: 2.7s;
+  }
+
+  @keyframes smokeFloat {
+    0%,
+    100% {
+      opacity: 0.9;
+      transform: translateY(0) scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(-6px) scale(1.05);
+    }
+  }
+
+  @keyframes smokeRise {
+    0% {
+      opacity: 0;
+      transform: translateY(12px) scale(0.85);
+    }
+    25% {
+      opacity: 0.85;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-36px) scale(1.25);
+    }
+  }
+}

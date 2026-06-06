@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 import { shop } from "../data/content";
@@ -13,9 +13,17 @@ export default function Navbar({ variant = "dark" }) {
   const [open, setOpen] = useState(false);
   const isDark = variant === "dark";
 
+  useEffect(() => {
+    if (!open) return;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   const linkClass = ({ isActive }) =>
     [
-      "text-sm tracking-wide transition-colors",
+      "block py-2 text-base tracking-wide transition-colors md:inline md:py-0 md:text-sm",
       isDark
         ? isActive
           ? "text-latte"
@@ -32,13 +40,14 @@ export default function Navbar({ variant = "dark" }) {
         isDark ? "bg-espresso/80 backdrop-blur-md" : "bg-cream/90 backdrop-blur-md border-b border-steam",
       ].join(" ")}
     >
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:py-5">
         <Link
           to="/"
           className={[
             "font-display text-2xl font-semibold tracking-tight",
             isDark ? "text-cream" : "text-espresso",
           ].join(" ")}
+          onClick={() => setOpen(false)}
         >
           {shop.name}
         </Link>
@@ -56,24 +65,39 @@ export default function Navbar({ variant = "dark" }) {
         <button
           type="button"
           className={[
-            "md:hidden text-sm uppercase tracking-widest",
+            "flex min-h-[44px] min-w-[44px] items-center justify-center md:hidden",
             isDark ? "text-cream" : "text-espresso",
           ].join(" ")}
           onClick={() => setOpen((v) => !v)}
-          aria-label="Toggle menu"
+          aria-expanded={open}
+          aria-label={open ? "Close menu" : "Open menu"}
         >
-          {open ? "Close" : "Menu"}
+          <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            className="h-6 w-6"
+            aria-hidden="true"
+          >
+            {open ? (
+              <path strokeLinecap="round" d="M6 6l12 12M18 6L6 18" />
+            ) : (
+              <path strokeLinecap="round" d="M4 7h16M4 12h16M4 17h16" />
+            )}
+          </svg>
         </button>
       </nav>
 
       {open && (
         <div
           className={[
-            "border-t px-6 py-6 md:hidden",
-            isDark ? "border-cream/10 bg-espresso" : "border-steam bg-cream",
+            "fixed inset-0 top-[65px] z-40 md:hidden",
+            isDark ? "bg-espresso" : "bg-cream",
           ].join(" ")}
         >
-          <ul className="flex flex-col gap-4">
+          <ul className="flex flex-col gap-1 px-6 py-8">
             {navLinks.map(({ to, label }) => (
               <li key={to}>
                 <NavLink
